@@ -292,6 +292,7 @@ function tampilLap()
         return view('laporan_cafe_bulanan', ['cafe' => $kafe]);
     }
 
+<<<<<<< HEAD
 public function search_laporan(Request $req) { // Sesuaikan nama function sesuai controller kamu ya
     // Validasi input untuk memastikan bulan dan tahun adalah angka
     $req->validate([
@@ -311,6 +312,15 @@ public function search_laporan(Request $req) { // Sesuaikan nama function sesuai
     // Mengurutkan data berdasarkan tanggal terbaru
     $tanggal = $query->orderBy('tanggal', 'desc')->get();
 
+=======
+public function search_laporan(Request $req) {
+    if($req->has('search')) {
+        $tanggal = Transaksi_Cafe::whereMonth('tanggal','LIKE',$req->search)->whereYear('tanggal','LIKE',$req->search2)->get();
+    }else{
+        $tanggal = Transaksi_Cafe::all();
+    }
+
+>>>>>>> cc2401f29ca2ff3fd1e066a21f0d2bbd465b10e9
     return view('laporan_cafe_bulanan',['cafe'=>$tanggal]);
 }
 #################################################LAPORAN_______________CAFE###########################################
@@ -323,6 +333,7 @@ function tampilLapPo()
     }
 
     public function search_laporan_po(Request $req) {
+<<<<<<< HEAD
     // Validasi input untuk memastikan bulan dan tahun adalah angka
     $req->validate([
         'search' => 'nullable|numeric|between:1,12',
@@ -343,6 +354,16 @@ function tampilLapPo()
 
     return view('laporan_po_bulanan',['ikapesta'=>$tanggal_po]);
 }
+=======
+        if($req->has('search')) {
+            $tanggal_po = Transaksi::whereMonth('tanggal','LIKE',$req->search)->whereYear('tanggal','LIKE',$req->search2)->get();
+        }else{
+            $tanggal_po = Transaksi::all();
+        }
+    
+        return view('laporan_po_bulanan',['ikapesta'=>$tanggal_po]);
+    }
+>>>>>>> cc2401f29ca2ff3fd1e066a21f0d2bbd465b10e9
 ################################################LAPORAN_______________PO###########################################
 
 
