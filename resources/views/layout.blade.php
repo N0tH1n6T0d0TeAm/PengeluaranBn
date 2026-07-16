@@ -26,7 +26,8 @@
       justify-content: center;
       align-items: center;
       background-color: #f7f9fb; 
-      transition: opacity 0.75s, visibilty 0.75s;
+      transition: opacity 0.75s, visibility 0.75s;
+      z-index: 9999;
     }
 
     .loader-hidden {
@@ -45,12 +46,78 @@
     }
 
     @keyframes loading {
-      from {
-        transform: rotate(0turn);
+      from { transform: rotate(0turn); }
+      to { transform: rotate(1turn); }
+    }
+
+    /* --- OPTIMISASI RESPONSIF --- */
+    
+    /* 1. Agar content wrapper selalu full height di mobile */
+    .content-wrapper {
+      min-height: calc(100vh - 101px);
+    }
+    
+    /* 2. Sidebar di mobile: full width dan smooth transition */
+    @media (max-width: 768px) {
+      .main-sidebar {
+        width: 260px !important;
+        transition: transform 0.3s ease-in-out;
       }
-      to{
-        transform: rotate(1turn);
+      
+      /* Sembunyikan sidebar secara default di mobile (tergantung setting AdminLTE) */
+      .sidebar-collapse .main-sidebar {
+        transform: translateX(-260px);
       }
+      
+      /* 3. Navbar di mobile: padding lebih kecil */
+      .main-header {
+        padding: 0 0.5rem;
+      }
+      
+      /* 4. Navbar brand text di mobile: lebih kecil atau sembunyikan jika perlu */
+      .brand-text {
+        font-size: 1rem;
+      }
+      
+      /* 5. Typography responsive */
+      body {
+        font-size: 0.9rem;
+      }
+      
+      /* 6. Card padding di mobile: lebih kecil */
+      .card {
+        margin: 0.5rem;
+      }
+      
+      /* 7. Footer di mobile: text di tengah, tidak float */
+      .main-footer {
+        text-align: center;
+      }
+      .main-footer .float-right {
+        float: none !important;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+    }
+    
+    /* 8. Ukuran medium (tablet) */
+    @media (min-width: 769px) and (max-width: 991px) {
+      .brand-text {
+        font-size: 1.05rem;
+      }
+    }
+    
+    /* 9. Optimisasi gambar di sidebar untuk semua ukuran */
+    .brand-image {
+      max-width: 45px !important;
+      max-height: 45px !important;
+    }
+    
+    /* 10. Pastikan teks di sidebar tidak overflow */
+    .nav-sidebar .nav-link p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   </style>
 
@@ -176,7 +243,16 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background: #6f42c1">
     <!-- Brand Logo -->
     <a onclick="window.location.reload();" class="brand-link" style="cursor: pointer">
-      <img src="https://assets.stickpng.com/images/58f8bcf70ed2bdaf7c128307.png" alt="SMK BAGIMU NEGERIKU" class="brand-image img-circle elevation-3" style="opacity: .8; background: rgb(255, 255, 255);">
+      <img src="https://picsum.photos/200/200?random=1" alt="SMK BAGIMU NEGERIKU" class="brand-image img-circle elevation-3" style="
+        opacity: 1; 
+        background: white; 
+        width: 40px; 
+        height: 40px; 
+        object-fit: cover; 
+        max-width: 100%;
+        display: block;
+      "
+      onerror="this.src='https://via.placeholder.com/40x40/6f42c1/ffffff?text=SMK'">
       <span class="brand-text font-weight-light">Pengeluaran</span>
     </a>
 
@@ -186,7 +262,7 @@
      
 
       <!-- SidebarSearch Form -->
-      <div class="form-inline">
+      <div class="form-inline"></div>
 
 
       <!-- Sidebar Menu -->
@@ -733,7 +809,7 @@
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright By @SmkBagimuNegeriku</strong> - No Reasonable
+    <strong>Copyright By @SmkBagimuNegeriku</strong> 
   </footer>
 
   <!-- Control Sidebar -->
