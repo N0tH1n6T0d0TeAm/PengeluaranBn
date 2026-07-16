@@ -50,7 +50,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Pengeluaran;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::view('home','home');
@@ -112,4 +112,4 @@ Route::get('laporan_po_bulanan',[Pengeluaran::class, 'tampilLapPo']);
 Route::get('/laporan_po_bulanan/search_po', [Pengeluaran::class, 'search_laporan_po']);
 
 #HOME
-Route::get('home',[Pengeluaran::class,'home']);
+Route::get('/',[Pengeluaran::class,'home']);
