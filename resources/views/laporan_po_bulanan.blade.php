@@ -52,7 +52,7 @@ function tgl_indo($tanggal){
         'September',
         'Oktober',
         'November',
-        'Desmber'
+        'Desember'
 );
 
 $pecahkan=explode('-',$tanggal);
@@ -169,6 +169,52 @@ return $pecahkan[2].' '.$bulan[(int)$pecahkan[1]].' '.$pecahkan[0];
 </script>
 
 <script>
+    class Table2Excel_po {
+        constructor() {
+            this.template = {
+                worksheet: `<?xml version="1.0"?><ss:Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+                    xmlns:o="urn:schemas-microsoft-com:office:office"
+                    xmlns:x="urn:schemas-microsoft-com:office:excel"
+                    xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+                    xmlns:html="http://www.w3.org/TR/REC-html40">
+                    <ss:Styles><ss:Style ss:ID="textStyle"><ss:NumberFormat ss:Format="@"/></ss:Style></ss:Styles>
+                    <ss:Worksheet ss:Name="Sheet1">
+                        <ss:Table>{table}</ss:Table>
+                    </ss:Worksheet>
+                </ss:Workbook>`,
+                tableRow: '<ss:Row>{cells}</ss:Row>',
+                tableCell: '<ss:Cell ss:StyleID="textStyle"><ss:Data ss:Type="String">{value}</ss:Data></ss:Cell>',
+            };
+        }
+
+        format(s, c) {
+            return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; });
+        }
+
+        export(table, name) {
+            let ctx = { worksheet: this.template.worksheet, table: '' };
+            let rows = table[0].querySelectorAll('tr');
+            for (let i = 0; i < rows.length; i++) {
+                let rowCtx = { tableRow: this.template.tableRow, cells: '' };
+                let cells = rows[i].querySelectorAll('td, th');
+                for (let j = 0; j < cells.length; j++) {
+                    rowCtx.cells += this.format(this.template.tableCell, {
+                        value: cells[j].innerText.trim()
+                    });
+                }
+                ctx.table += this.format(this.template.tableRow, rowCtx);
+            }
+            let workbook = this.format(this.template.worksheet, ctx);
+            let url = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(workbook);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = name || 'Laporan_PO_' + (new Date().toLocaleDateString('id-ID')) + '.xls';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    }
+
     document.getElementById('downloadexcel').addEventListener('click', function() {
         var table2excel = new Table2Excel_po();
         table2excel.export(document.querySelectorAll("#table"));

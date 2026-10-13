@@ -273,7 +273,7 @@
 
                <li class="nav-item">
                 <li class="nav-item">
-                  <a href="/home" class="nav-link">
+                  <a href="/" class="nav-link">
                     <i class="fa fa-home nav-icon"></i>
                     <p>Home</p>
                   </a>
